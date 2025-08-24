@@ -12,7 +12,8 @@ export const generateToken = (id: Types.ObjectId, res: Response) => {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         sameSite: process.env.NODE_ENV === "production" ? "none" : "strict", //CSRF Protection
         httpOnly: true, // prevent javascript to access cookie
-        secure: process.env.NODE_ENV === "production" // use secure cookie in production
+        secure: process.env.NODE_ENV === "production" ,// use secure cookie in production
+        path:"/"
     })
     return token;
 }
@@ -24,7 +25,8 @@ export const generateSellerToken = (email: string, res: Response) => {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         sameSite: process.env.NODE_ENV === "production" ? "none" : "strict", //CSRF Protection
         httpOnly: true, // prevent javascript to access cookie
-        secure: process.env.NODE_ENV === "production" // use secure cookie in production
+        secure: process.env.NODE_ENV === "production", // use secure cookie in production
+        path: "/"
     })
     return token;
 }

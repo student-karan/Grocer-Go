@@ -25,10 +25,22 @@ connectCloudinary();
 
 const AllowedOrigins = ["http://localhost:5173","https://grocer-go-client.vercel.app"];
 
-app.use(cors({
-    origin: AllowedOrigins,
-    credentials: true
-}))
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g., mobile apps or Postman)
+      if (!origin) return callback(null, true);
+      if (AllowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // Allow cookies to be sent
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Explicitly allow methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
+  })
+);
 
 app.post("/stripe",express.raw({type:"application/json"}),asyncWrap(stripeWebhooks));
 
