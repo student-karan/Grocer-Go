@@ -43,8 +43,6 @@ export const Login = async (req: Request, res: Response, next: NextFunction) => 
     }
     generateToken(existedUser._id, res);
     const ActiveUser = existedUser.toObject();
-    console.log(ActiveUser);
-
     res.status(200).send({ user: {...ActiveUser,password:undefined}, message: `Welcome back ${existedUser.username}` });
 }
 
