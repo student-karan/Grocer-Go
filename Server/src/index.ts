@@ -23,24 +23,12 @@ const port = process.env.PORT || 4000;
 connectdb();
 connectCloudinary();
 
-const AllowedOrigins = ["http://localhost:5173","https://grocer-go-client.vercel.app"];
+const AllowedOrigins = ["http://localhost:5173"];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (e.g., mobile apps or Postman)
-      if (!origin) return callback(null, true);
-      if (AllowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true, // Allow cookies to be sent
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Explicitly allow methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
-  })
-);
+app.use(cors({
+    origin: AllowedOrigins,
+    credentials: true
+}))
 
 app.post("/stripe",express.raw({type:"application/json"}),asyncWrap(stripeWebhooks));
 
@@ -51,15 +39,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // all routes
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response)=>{
     res.json({message:"Welcome to my website"});
-});
+})
 app.use("/api/user", UserRouter);
 app.use("/api/seller", SellerRouter);
 app.use("/api/product", ProductRouter);
 app.use("/api/cart", CartRouter);
 app.use("/api/address", AddressRouter);
 app.use("/api/order",OrderRouter);
+
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(__dirname,"../../Client/dist")));
+
+    app.get(/.*/,(req:Request,res:Response)=>{
+        res.sendFile(path.join(__dirname,"../../Client/dist/index.html"));
+    })
+}
 
 // error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
