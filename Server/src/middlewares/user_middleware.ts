@@ -2,7 +2,6 @@ import "dotenv/config";
 import jwt, { DecodeOptions, JwtPayload } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import ExpressError from "../ExpressError";
-import User from "../models/userModel";
 import { merge } from "lodash";
 
 const secret = process.env.JWT_SECRET as string;
