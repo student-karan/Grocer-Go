@@ -138,7 +138,7 @@ export const placeOrderStripe = async (req: Request, res: Response, next: NextFu
 };
 
 // stripe webhook for payment verification : /stripe
-export const stripeWebhooks = async (req: Request, res: Response,next:NextFunction) => {
+export const stripeWebhooks = async (req: Request, res: Response, next: NextFunction) => {
     const secret_key = process.env.STRIPE_SECRET_KEY as string;
     const stripeInstance = new Stripe(secret_key, { apiVersion: "2025-07-30.basil" });
 
@@ -153,23 +153,37 @@ export const stripeWebhooks = async (req: Request, res: Response,next:NextFuncti
         )
     } catch (error) {
         console.error('Webhook signature verification failed:', error);
-        throw new ExpressError(400,`Webhook error: ${error}`);
+        throw new ExpressError(400, `Webhook error: ${error}`);
     }
 
+    console.log(`🎯 Webhook received: ${event.type}`);
+
     switch (event.type) {
-        // MAIN EVENT - handles successful payments
         case "checkout.session.completed": {
             const session = event.data.object as Stripe.Checkout.Session;
+            console.log(`💳 Session status: ${session.status}, Payment status: ${session.payment_status}`);
             
             if (session.payment_status === 'paid') {
                 const { orderId, userId } = session.metadata as { orderId: string, userId: string };
+                console.log(`📦 Processing order: ${orderId} for user: ${userId}`);
 
                 if (!orderId || !userId) {
-                    console.error("Missing metadata in checkout session");
-                    throw new ExpressError(400,"Missing metadata");
+                    console.error("❌ Missing metadata in checkout session");
+                    throw new ExpressError(400, "Missing metadata");
                 }
 
                 try {
+                    // Check if order exists first
+                    const existingOrder = await Order.findById(orderId);
+                    console.log(`🔍 Existing order found: ${existingOrder ? 'YES' : 'NO'}`);
+                    
+                    if (!existingOrder) {
+                        console.error(`❌ Order ${orderId} not found in database`);
+                        throw new ExpressError(400, "Order not found");
+                    }
+
+                    console.log(`📊 Current order status: isPaid=${existingOrder.isPaid}, status=${existingOrder.status}`);
+
                     // Mark payment as paid
                     const updatedOrder = await Order.findByIdAndUpdate(
                         orderId,
@@ -180,26 +194,29 @@ export const stripeWebhooks = async (req: Request, res: Response,next:NextFuncti
                         { new: true, runValidators: true }
                     );
 
-                    if (!updatedOrder) {
-                        console.error(`Order not found: ${orderId}`);
-                        throw new ExpressError(400,"Order not found");
-                    }
+                    console.log(`✅ Order updated: isPaid=${updatedOrder?.isPaid}, status=${updatedOrder?.status}`);
 
                     // Clear user's cart
-                    await User.findByIdAndUpdate(userId, { cartItems: {} });
+                    const userUpdate = await User.findByIdAndUpdate(userId, { cartItems: {} });
+                    console.log(`🛒 Cart cleared for user: ${userUpdate ? 'SUCCESS' : 'FAILED'}`);
                     
+                    console.log(`🎉 Payment processed successfully for order: ${orderId}`);
                     res.status(200).send("Payment processed successfully");
-                } catch (error) {
+                } catch (dbError) {
+                    console.error('💥 Database error:', dbError);
                     throw new ExpressError(500, "Database error during payment processing");
                 }
+            } else {
+                console.log(`⏳ Session completed but payment status is: ${session.payment_status}`);
+                res.status(200).send("Session completed - payment not yet paid");
             }
             break;
         }
 
-        // CLEANUP EVENT - handles expired sessions
         case "checkout.session.expired": {
             const session = event.data.object as Stripe.Checkout.Session;
             const { orderId } = session.metadata as { orderId: string };
+            console.log(`⏰ Session expired for order: ${orderId}`);
 
             if (orderId) {
                 try {
@@ -212,7 +229,9 @@ export const stripeWebhooks = async (req: Request, res: Response,next:NextFuncti
             res.status(200).send("Expired session handled");
             break;
         }
+
         default: {
+            console.log(`🤷 Unhandled event type: ${event.type}`);
             res.status(200).send("Event received");
             break;
         }
