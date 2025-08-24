@@ -152,66 +152,68 @@ export const stripeWebhooks = async (req: Request, res: Response) => {
             process.env.STRIPE_WEBHOOK_SECRET as string
         )
     } catch (error) {
-        throw new ExpressError(400, `Webhook error: ${error}`);
+        console.error('Webhook signature verification failed:', error);
+        return res.status(400).send(`Webhook error: ${error}`);
     }
 
     switch (event.type) {
-        case "payment_intent.succeeded": {
-            const payment_intent = event.data.object as Stripe.PaymentIntent;
-            const payment_intentId = payment_intent.id;
+        // MAIN EVENT - handles successful payments
+        case "checkout.session.completed": {
+            const session = event.data.object as Stripe.Checkout.Session;
+            
+            if (session.payment_status === 'paid') {
+                const { orderId, userId } = session.metadata as { orderId: string, userId: string };
 
-            //getting session metadata
-            const session = await stripeInstance.checkout.sessions.list({
-                payment_intent: payment_intentId
-            })
-            const { orderId, userId } = session.data[0].metadata as { orderId: string, userId: string };
+                if (!orderId || !userId) {
+                    console.error("Missing metadata in checkout session");
+                    return res.status(400).send("Missing metadata");
+                }
 
-            if (!orderId || !userId) {
-                throw new ExpressError(400, "Missing metadata in checkout session");
+                try {
+                    // Mark payment as paid
+                    const updatedOrder = await Order.findByIdAndUpdate(
+                        orderId,
+                        {
+                            isPaid: true,
+                            status: "Order Placed"
+                        },
+                        { new: true, runValidators: true }
+                    );
+
+                    if (!updatedOrder) {
+                        console.error(`Order not found: ${orderId}`);
+                        return res.status(404).send("Order not found");
+                    }
+
+                    // Clear user's cart
+                    await User.findByIdAndUpdate(userId, { cartItems: {} });
+                    
+                    res.status(200).send("Payment processed successfully");
+                } catch (error) {
+                    throw new ExpressError(500, "Database error during payment processing");
+                }
             }
-
-            // mark payment as paid
-            const updatedOrder = await Order.findByIdAndUpdate(
-                orderId,
-                {
-                    isPaid: true,
-                    status: "Order Placed",
-                },
-                { new: true, runValidators: true }
-            );
-
-            if (!updatedOrder) {
-                throw new ExpressError(404, "Order not found");
-            }
-
-            // Clear user's cart
-            await User.findByIdAndUpdate(userId, { cartItems: {} });
-            res.status(200).send("Payment processed successfully");
             break;
         }
 
-        case "payment_intent.payment_failed": {
-            const payment_intent = event.data.object as Stripe.PaymentIntent;
-            const payment_intentId = payment_intent.id;
-
-            //getting session metadata
-            const session = await stripeInstance.checkout.sessions.list({
-                payment_intent: payment_intentId
-            })
-            const { orderId } = session.data[0].metadata as { orderId: string };
+        // CLEANUP EVENT - handles expired sessions
+        case "checkout.session.expired": {
+            const session = event.data.object as Stripe.Checkout.Session;
+            const { orderId } = session.metadata as { orderId: string };
 
             if (orderId) {
+                try {
                     await Order.findByIdAndDelete(orderId);
                     console.log(`Deleted expired order: ${orderId}`);
-                } else {
-                    throw new ExpressError(400,"Error deleting expired order");
+                } catch (error) {
+                    console.error(`Error deleting expired order:`, error);
                 }
-
+            }
             res.status(200).send("Expired session handled");
             break;
         }
-        default:{
-            console.error(`Unhandled event type : ${event.type}`);
+        default: {
+            res.status(200).send("Event received");
             break;
         }
     }
