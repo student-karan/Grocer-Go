@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build":"npm install --prefix Server && npm install --prefix Client && npm run build --prefix Client",
-    "serve": "npm run build --prefix Server && npm run serve --prefix Server"
+    "build": "npm install --prefix Server && npm install --prefix Client && npm run build --prefix Server && npm run build --prefix Client",
+    "serve": "npm run serve --prefix Server"
   },
   "keywords": [],
   "author": "",
