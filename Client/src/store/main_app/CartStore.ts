@@ -143,6 +143,7 @@ export const CartStore = create<CartStates>((set, get) => ({
       const res = await axiosInstance.post("/order/cod", { cartItems, address });
       toast.success(res.data);
       set({ cartItems: {} });
+      get().updateCart();
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data as string);
@@ -160,6 +161,8 @@ export const CartStore = create<CartStates>((set, get) => ({
       const { cartItems } = get();
       const res = await axiosInstance.post("/order/stripe", { cartItems, address });
       window.location.replace(res.data.url);
+      set({ cartItems: {} });
+      get().updateCart();
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data as string);

@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 const PaymentTab = () => {
   const { paymentOption, setPaymentOption, AllCartItemsPrice, cartItems, setOrderCOD, setOrderstripe } = CartStore();
-  const { showAddress, selectedAddress, addresses, setShowAddress, setSelectedAddress, getAddresses, AuthUser,setMyorders } = AppStore();
+  const { showAddress, selectedAddress, addresses, setShowAddress, setSelectedAddress, getAddresses, AuthUser } = AppStore();
 
   async function placeOrder() {
     if (Object.keys(cartItems).length == 0 || !selectedAddress) {
@@ -34,10 +34,6 @@ const PaymentTab = () => {
       getAddresses();
     }
   }, [addresses]);
-
-  useEffect(() => {
-        setMyorders();
-    }, [setOrderCOD, setOrderstripe, AuthUser]);
 
   return (
     <div className="payment_box">

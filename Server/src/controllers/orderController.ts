@@ -126,8 +126,6 @@ export const placeOrderStripe = async (req: Request, res: Response, next: NextFu
                 userId: userId.toString()
             }
         });
-
-        console.log("Created session with order ID:", Neworder._id.toString());
         res.status(200).send({ url: session.url });
 
     } catch (err) {
