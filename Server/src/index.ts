@@ -23,7 +23,7 @@ const port = process.env.PORT || 4000;
 connectdb();
 connectCloudinary();
 
-const AllowedOrigins = ["http://localhost:5173"];
+const AllowedOrigins = ["http://localhost:5173","https://grocer-go-client.onrender.com"];
 
 app.use(cors({
     origin: AllowedOrigins,
