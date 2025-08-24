@@ -3,11 +3,10 @@
 A **MERN-based Ecommerce Web Application** for online grocery shopping with both **customer** and **seller dashboards**.  
 Built with **TypeScript**, **React (Vite)**, **TailwindCSS**, **Express.js**, **MongoDB**, and **Stripe**.  
 
----
+
 
 ## 🚀 Demo
 > [Check it out](https://grocer-go-client.vercel.app/)
----
 
 
 ## 🚀 Features  
@@ -24,9 +23,11 @@ Built with **TypeScript**, **React (Vite)**, **TailwindCSS**, **Express.js**, **
 ### Seller Features
 - 📊 Dedicated **Seller Dashboard**  
 - ➕ Add and manage products with **Cloudinary + Multer image uploads**  
-- 📦 Track progress of customer orders in real-time  
+- 📦 Track progress of customer orders in real-time
 
+  
 ---
+
 
 ## 🛠️ Tech Stack  
 
@@ -110,7 +111,7 @@ npm run dev
 
 
 
-### 🙌 Acknowledgements
+## 🙌 Acknowledgements
 
 - This component was built as part of a learning project to strengthen React, TypeScript and NodeJS fundamentals.
 - Inspired by **GreatStack**.
