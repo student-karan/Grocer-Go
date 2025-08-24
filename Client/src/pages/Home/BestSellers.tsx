@@ -3,9 +3,6 @@ import { type product } from '../../Helpers/types.ts';
 
 const BestSellers = ({ products }: { products: product[] }) => {
     let BestProducts = products.filter((product) => product.inStock);
-    if (!products || !Array.isArray(products)) {
-        return <div>Loading products...</div>;
-    }
     return (
         <div className="section_body">
             <div className="section_heading_container">
@@ -13,6 +10,7 @@ const BestSellers = ({ products }: { products: product[] }) => {
                 <div className="heading_underline"></div>
             </div>
             <div className='all_products'>
+                {products.length == 0 && <h2>No Products Found</h2>}
                 {BestProducts.map((product, idx) => {
                     return (<ProductCard key={idx} product={product} />)
                 })}
