@@ -23,17 +23,12 @@ const App = () => {
   const location = useLocation();
   const ref = useRef<HTMLDivElement>(null);
   const { AuthUser, setUser } = AppStore() as AppStates;
-  const { setSeller, setProductsList, AuthSeller } = SellerStore() as SellerStates;
   const { loadproducts } = ProductStore();
 
   useEffect(() => {
     async function rerender() {
       await loadproducts();
       await setUser();
-      await setSeller();
-      if (AuthSeller) {
-        await setProductsList();
-      }
     }
     rerender();
   }, []);
