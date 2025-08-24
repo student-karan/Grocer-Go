@@ -68,9 +68,9 @@ const PaymentTab = () => {
       ) : (
         <div className="payment_method">
           <h2 className="text-lg font-medium">Payment Option</h2>
-          <select className="p-2" onChange={(e) => setPaymentOption(e.target.value as "COD" | "online")}>
+          <select className="p-2" onChange={(e) => setPaymentOption(e.target.value as "COD" | "Online")}>
             <option value="COD">Cash on delivery</option>
-            <option value="online">Online Payment</option>
+            <option value="Online">Online Payment</option>
           </select>
         </div>
       )}

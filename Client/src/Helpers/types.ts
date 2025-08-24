@@ -129,9 +129,9 @@ export type product = {
 
 export type CartStates = {
     cartItems: Record<string, number>,
-    paymentOption: "COD" | "online",
+    paymentOption: "COD" | "Online",
     settingOrder:boolean,
-    setPaymentOption: (option: "COD" | "online") => void,
+    setPaymentOption: (option: "COD" | "Online") => void,
     setCart : () => Promise<void>,
     updateCart : () => Promise<void>,
     addtoCart: (itemid: string) => void,

@@ -93,7 +93,7 @@ export const placeOrderStripe = async (req: Request, res: Response, next: NextFu
         amount: totalAmount,
         address,
         status: "pending",
-        paymentType: "online",
+        paymentType: "Online",
         isPaid: false
     });
 
