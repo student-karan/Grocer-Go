@@ -138,7 +138,7 @@ export const placeOrderStripe = async (req: Request, res: Response, next: NextFu
 };
 
 // stripe webhook for payment verification : /stripe
-export const stripeWebhooks = async (req: Request, res: Response) => {
+export const stripeWebhooks = async (req: Request, res: Response,next:NextFunction) => {
     const secret_key = process.env.STRIPE_SECRET_KEY as string;
     const stripeInstance = new Stripe(secret_key, { apiVersion: "2025-07-30.basil" });
 
@@ -153,7 +153,7 @@ export const stripeWebhooks = async (req: Request, res: Response) => {
         )
     } catch (error) {
         console.error('Webhook signature verification failed:', error);
-        return res.status(400).send(`Webhook error: ${error}`);
+        throw new ExpressError(400,`Webhook error: ${error}`);
     }
 
     switch (event.type) {
@@ -166,7 +166,7 @@ export const stripeWebhooks = async (req: Request, res: Response) => {
 
                 if (!orderId || !userId) {
                     console.error("Missing metadata in checkout session");
-                    return res.status(400).send("Missing metadata");
+                    throw new ExpressError(400,"Missing metadata");
                 }
 
                 try {
@@ -182,7 +182,7 @@ export const stripeWebhooks = async (req: Request, res: Response) => {
 
                     if (!updatedOrder) {
                         console.error(`Order not found: ${orderId}`);
-                        return res.status(404).send("Order not found");
+                        throw new ExpressError(400,"Order not found");
                     }
 
                     // Clear user's cart
