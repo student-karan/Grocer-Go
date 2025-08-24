@@ -1,16 +1,9 @@
-import { useEffect } from "react";
 import Sectionheading from "../../components/Sectionheading.tsx";
-import { AppStates, CartStates, orders } from "../../Helpers/types.ts";
+import { AppStates, orders } from "../../Helpers/types.ts";
 import { AppStore } from "../../store/main_app/AppStore.ts";
-import { CartStore } from "../../store/main_app/CartStore.ts";
 
 const MyOrders = () => {
-    const { myOrders, setMyorders, AuthUser } = AppStore() as AppStates;
-    const { setOrderCOD, setOrderstripe } = CartStore() as CartStates;
-
-    useEffect(() => {
-        setMyorders();
-    }, [setOrderCOD, setOrderstripe, AuthUser]);
+    const { myOrders} = AppStore() as AppStates;
 
     return (
         <div className="webpage md:px-10 px-2">
