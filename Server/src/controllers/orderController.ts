@@ -152,11 +152,8 @@ export const stripeWebhooks = async (req: Request, res: Response, next: NextFunc
             process.env.STRIPE_WEBHOOK_SECRET as string
         )
     } catch (error) {
-        console.error('Webhook signature verification failed:', error);
         throw new ExpressError(400, `Webhook error: ${error}`);
     }
-
-    console.log(`🎯 Webhook received: ${event.type}`);
 
     switch (event.type) {
         case "checkout.session.completed": {
@@ -165,20 +162,15 @@ export const stripeWebhooks = async (req: Request, res: Response, next: NextFunc
             
             if (session.payment_status === 'paid') {
                 const { orderId, userId } = session.metadata as { orderId: string, userId: string };
-                console.log(`📦 Processing order: ${orderId} for user: ${userId}`);
-
                 if (!orderId || !userId) {
-                    console.error("❌ Missing metadata in checkout session");
                     throw new ExpressError(400, "Missing metadata");
                 }
 
                 try {
                     // Check if order exists first
                     const existingOrder = await Order.findById(orderId);
-                    console.log(`🔍 Existing order found: ${existingOrder ? 'YES' : 'NO'}`);
                     
                     if (!existingOrder) {
-                        console.error(`❌ Order ${orderId} not found in database`);
                         throw new ExpressError(400, "Order not found");
                     }
 
@@ -194,20 +186,13 @@ export const stripeWebhooks = async (req: Request, res: Response, next: NextFunc
                         { new: true, runValidators: true }
                     );
 
-                    console.log(`✅ Order updated: isPaid=${updatedOrder?.isPaid}, status=${updatedOrder?.status}`);
-
                     // Clear user's cart
                     const userUpdate = await User.findByIdAndUpdate(userId, { cartItems: {} });
-                    console.log(`🛒 Cart cleared for user: ${userUpdate ? 'SUCCESS' : 'FAILED'}`);
-                    
-                    console.log(`🎉 Payment processed successfully for order: ${orderId}`);
                     res.status(200).send("Payment processed successfully");
                 } catch (dbError) {
-                    console.error('💥 Database error:', dbError);
                     throw new ExpressError(500, "Database error during payment processing");
                 }
             } else {
-                console.log(`⏳ Session completed but payment status is: ${session.payment_status}`);
                 res.status(200).send("Session completed - payment not yet paid");
             }
             break;
@@ -216,14 +201,11 @@ export const stripeWebhooks = async (req: Request, res: Response, next: NextFunc
         case "checkout.session.expired": {
             const session = event.data.object as Stripe.Checkout.Session;
             const { orderId } = session.metadata as { orderId: string };
-            console.log(`⏰ Session expired for order: ${orderId}`);
 
             if (orderId) {
                 try {
                     await Order.findByIdAndDelete(orderId);
-                    console.log(`Deleted expired order: ${orderId}`);
                 } catch (error) {
-                    console.error(`Error deleting expired order:`, error);
                 }
             }
             res.status(200).send("Expired session handled");
@@ -231,7 +213,6 @@ export const stripeWebhooks = async (req: Request, res: Response, next: NextFunc
         }
 
         default: {
-            console.log(`🤷 Unhandled event type: ${event.type}`);
             res.status(200).send("Event received");
             break;
         }
