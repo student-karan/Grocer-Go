@@ -39,9 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // all routes
-app.get("/", (req: Request, res: Response)=>{
-    res.json({message:"Welcome to my website"});
-})
+
 app.use("/api/user", UserRouter);
 app.use("/api/seller", SellerRouter);
 app.use("/api/product", ProductRouter);
