@@ -107,11 +107,11 @@ npm run dev
  Frontend : deployed on **Vercel**
 
  Backend : deployed on **Render**
----
+
 
 
 ### 🙌 Acknowledgements
 
 - This component was built as part of a learning project to strengthen React, TypeScript and NodeJS fundamentals.
 - Inspired by **GreatStack**.
----
+
