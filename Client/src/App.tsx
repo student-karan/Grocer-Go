@@ -21,7 +21,7 @@ const App = () => {
   const { theme } = ThemeStore() as themeStore;
   const location = useLocation();
   const ref = useRef<HTMLDivElement>(null);
-  const { AuthUser, setUser } = AppStore() as AppStates;
+  const { AuthUser, setUser,isCheckingAuth } = AppStore() as AppStates;
   const { loadproducts } = ProductStore();
 
   useEffect(() => {
@@ -32,13 +32,21 @@ const App = () => {
     rerender();
   }, []);
 
-
   // Scroll to top on route change
   useEffect(() => {
     if (ref.current) {
       ref.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [location.pathname]);
+
+  if (!AuthUser && isCheckingAuth) {
+    return (
+      <div className='registration_page'>
+            <div className='animate-spin rounded-full size-24 border-4 border-gray-300 border-t-orange-500'>
+            </div>
+        </div>
+    )
+  }
 
   return (
     <div>
