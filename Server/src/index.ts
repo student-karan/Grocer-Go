@@ -52,7 +52,7 @@ app.use("/api/order",OrderRouter);
 if(process.env.NODE_ENV === "production"){
     app.use(express.static(path.resolve(__dirname,"../../Client/dist")));
     
-    app.get("*",(req:Request,res:Response)=>{
+    app.get(/(.*)/,(req:Request,res:Response)=>{
         res.sendFile(path.resolve(__dirname,"../../Client/dist/index.html"));
     })
 }
