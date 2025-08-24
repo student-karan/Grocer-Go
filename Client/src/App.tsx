@@ -9,13 +9,12 @@ import Addaddress from "./pages/Address/Addaddress.tsx";
 import { ThemeStore } from "./store/main_app/ThemeStore.ts";
 import { ProductStore } from "./store/main_app/ProductStore.ts";
 import { AppStore } from "./store/main_app/AppStore.ts";
-import { type themeStore, type AppStates, SellerStates } from "./Helpers/types.js";
+import { type themeStore, type AppStates } from "./Helpers/types.js";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { Toaster } from "react-hot-toast";
 import MyOrders from "./pages/Orders/Orders.tsx";
 import SellerPage from "./pages/SellerDashboard/SellerPage.tsx";
-import { SellerStore } from "./store/seller_dashboard/SellerStore.ts";
 import Loader from "./pages/Cart/Loader.tsx";
 
 const App = () => {
