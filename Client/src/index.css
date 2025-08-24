@@ -1,0 +1,662 @@
+@import url('https://fonts.googleapis.com/css2?family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&family=Tektur:wght@400..900&family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* --x--x--x-- MAIN WEBSITE --x--x--x-- */
+.main_container {
+    @apply relative min-h-screen flex flex-col items-center bg-base-200 font-raleway scroll-smooth tracking-wide
+}
+
+.webpage {
+    @apply w-full flex flex-col items-center gap-20
+}
+
+/* NAVBAR */
+.navbar_body {
+    @apply navbar sticky top-0 bg-base-300 px-4 gap-4 z-20
+}
+
+.web_logo {
+    @apply font-tektur flex w-fit items-center
+}
+
+.login {
+    @apply btn bg-orange-600 hover:bg-orange-600 rounded-full px-5 text-lg font-tektur font-medium
+}
+
+.navbar_center_icons {
+    @apply menu menu-horizontal hidden lg:flex px-1 gap-4
+}
+
+.navbar_end_full_screen {
+    @apply navbar-end hidden lg:flex items-center gap-4
+}
+
+.search_bar {
+    @apply input input-bordered w-24 md:w-auto pl-8
+}
+
+.theme {
+    @apply p-2 bg-neutral rounded-lg
+}
+
+.nav_links_full_screen {
+    @apply menu menu-horizontal hidden lg:flex px-1 gap-4 text-base
+}
+
+.dropdown_items {
+    @apply dropdown-content menu bg-base-100 rounded-box z-[1] min-w-32 w-fit p-2 shadow
+}
+
+.nav_link {
+    @apply focus:bg-orange-600 focus:text-base-100 font-tektur
+}
+
+/* FOOTER */
+.footer_container {
+    @apply w-full bg-base-300 mt-20
+}
+
+.footer_main_body {
+    @apply w-full flex flex-col md:flex-row gap-10 md:gap-5 p-5 md:p-10
+}
+
+.website_logo_and_moto {
+    @apply w-full md:w-1/2 flex flex-col gap-5
+}
+
+.company_moto {
+    @apply text-base opacity-50
+}
+
+.footer_link_sections {
+    @apply w-full md:w-1/2 grid grid-cols-2 sm:grid-cols-3 gap-y-5
+}
+
+.footer_link_section_heading {
+    @apply footer-title text-base sm:text-lg
+}
+
+.link_section {
+    @apply flex flex-col
+}
+
+.footer_link {
+    @apply link link-hover my-1 text-sm sm:text-base
+}
+
+.separator {
+    @apply w-[90%] h-[1px] bg-gray-400 mx-auto
+}
+
+.footer_copyright_section {
+    @apply text-center my-4 text-gray-500 text-xs sm:text-sm md:text-base px-5  sm:px-0
+}
+
+/* LINK */
+.link_on_hover {
+    @apply hover:link-primary hover:underline
+}
+
+/* HOME PAGE */
+
+/* MAIN_BANNER */
+.banner {
+    @apply hidden w-full md:block shadow-xl
+}
+
+.banner_sm {
+    @apply md:hidden w-full rounded-lg
+}
+
+.banner_data {
+    @apply absolute inset-0 top-[55%] left-[10%] md:top-[35%] md:left-[5%] flex flex-col gap-5
+}
+
+.banner_text {
+    @apply text-xl sm:text-3xl md:text-4xl lg:text-5xl text-black leading-tight font-medium
+}
+
+.banner_links {
+    @apply flex flex-col md:flex-row items-start md:items-center gap-4 sm:text-base md:text-lg lg:text-xl
+}
+
+.banner_link_1 {
+    @apply flex gap-2 lg:p-4 py-2 px-4 bg-primary opacity-100 hover:opacity-90 text-white transition
+}
+
+.banner_link_2 {
+    @apply hidden md:flex gap-2 px-4 items-center text-black
+}
+
+.banner_link_1_arrow {
+    @apply md:hidden transition group-focus:translate-x-1
+}
+
+.banner_link_2_arrow {
+    @apply transition group-focus:translate-x-1
+}
+
+/* SECTION */
+.section_body {
+    @apply w-[95%] flex flex-col items-center gap-10
+}
+
+.section_heading_container {
+    @apply flex flex-col items-end self-start md:gap-2 sm:ml-5 w-fit
+}
+
+.section_heading {
+    @apply text-lg sm:text-2xl md:text-3xl font-medium
+}
+
+.heading_underline {
+    @apply h-0.5 w-[50%] bg-orange-700 rounded-full
+}
+
+/* CATEGORIES */
+.all_categories {
+    @apply w-full flex flex-wrap justify-center md:gap-5 gap-3
+}
+
+.category_body {
+    @apply flex flex-col p-4 items-center justify-center rounded-lg
+}
+
+.product_img {
+    @apply sm:size-32 size-20 mx-auto hover:scale-110 transition-transform
+}
+
+/* PRODUCT CARD */
+.best_sellers_heading {
+    @apply text-2xl md:text-3xl ml-5 mb-10 self-start font-medium
+}
+
+.product_card {
+    @apply flex flex-col w-fit bg-base-300 p-2 rounded-lg cursor-pointer shadow-lg
+}
+
+.cartbtn {
+    @apply flex items-center justify-between min-w-[80px] sm:text-lg text-base bg-orange-600 text-white p-2 rounded-lg transition
+}
+
+.category {
+    @apply text-xs
+}
+
+.product_name {
+    @apply sm:text-lg text-base
+}
+
+.card_lower_body {
+    @apply flex items-center gap-4 mt-5
+}
+
+.price {
+    @apply flex gap-1 items-center
+}
+
+.real_price {
+    @apply line-through sm:text-base text-xs
+}
+
+.offer_price {
+    @apply sm:text-xl text-base
+}
+
+/* PRODUCT DETAILS */
+.prod_page {
+    @apply w-full flex flex-col gap-10
+}
+
+.main_container_detail {
+    @apply flex md:flex-row flex-col self-center md:gap-20 gap-10
+}
+
+.img_container {
+    @apply flex items-center gap-4
+}
+
+.img_gallery {
+    @apply flex flex-col items-center justify-center
+}
+
+.gallery_img {
+    @apply md:size-20 size-14 object-cover mb-2 border-2 border-gray-500 rounded-md cursor-pointer shadow-xl
+}
+
+.display_img {
+    @apply md:size-96 size-2/3 object-cover mb-2 border-2 border-gray-500 rounded-md shadow-xl
+}
+
+.detail_container {
+    @apply flex flex-col gap-7
+}
+
+.product_name_details {
+    @apply text-lg sm:text-2xl md:text-3xl font-semibold
+}
+
+.rating {
+    @apply flex items-center gap-1
+}
+
+.about_prod {
+    @apply text-2xl
+}
+
+.product_properties {
+    @apply list-disc mt-1 pl-5 text-gray-600
+}
+
+.add_cart_details {
+    @apply lg:px-6 lg:py-4 py-2 px-4 bg-neutral opacity-100 hover:opacity-90 text-white
+}
+
+.buy_now {
+    @apply lg:px-6 lg:py-4 py-2 px-4 bg-primary opacity-100 hover:opacity-90 text-white
+}
+
+.related_products {
+    @apply w-full flex flex-col gap-10 mt-10
+}
+
+.related_prod_container {
+    @apply md:w-fit grid md:grid-cols-4 grid-cols-2 md:gap-5 gap-2 md:ml-5
+}
+
+.loader_container {
+    @apply flex justify-center items-center h-screen
+}
+
+.loader {
+    @apply size-10 animate-spin
+}
+
+/* BOTTOM BANNER */
+.text_container_outer {
+    @apply absolute inset-0 flex md:items-center justify-center md:justify-end md:px-32
+}
+
+.text_container_inner {
+    @apply flex flex-col items-start gap-4 my-24 sm:my-32 md:my-0
+}
+
+.text_container_main_heading {
+    @apply text-green-600 text-xl md:text-2xl lg:text-3xl font-semibold
+}
+
+.feature_title {
+    @apply text-base md:text-lg lg:text-xl font-semibold
+}
+
+.feature_description {
+    @apply text-xs md:text-sm lg:text-base
+}
+
+/* NEWS LETTER */
+.news_letter {
+    @apply w-[95%] flex flex-col items-center justify-center text-center space-y-2
+}
+
+.news_letter_heading {
+    @apply md:text-4xl text-2xl font-semibold
+}
+
+.news_letter_sub_heading {
+    @apply md:text-lg text-gray-500 pb-8
+}
+
+.news_letter_form_body {
+    @apply flex items-center justify-between max-w-2xl w-full h-12
+}
+
+.news_letter_form_input {
+    @apply border border-gray-300 rounded-md h-full border-r-0 outline-none w-full rounded-r-none px-3 text-gray-500
+}
+
+.news_letter_form_btn {
+    @apply md:px-12 px-8 h-full text-white bg-primary opacity-70 hover:opacity-100 transition-all cursor-pointer rounded-md rounded-l-none
+}
+
+/* SIGNUP PAGE */
+.registration_page {
+    @apply fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center backdrop-blur-xl bg-white/20 z-30
+}
+
+.registration_form {
+    @apply relative flex flex-col gap-3 bg-base-300 min-w-[320px] w-1/4 py-5 px-8 rounded-lg shadow-xl border border-gray-500
+}
+
+.registration_form_heading {
+    @apply text-2xl font-medium mt-2 text-center
+}
+
+.registration_form_subheading {
+    @apply text-base font-medium text-center
+}
+
+.form_input_container {
+    @apply w-full flex flex-col gap-3 min-h-[50px]
+}
+
+.form_input {
+    @apply input input-bordered pl-10 w-full max-w-xs
+}
+
+.form_icon {
+    @apply absolute top-3 left-2 text-orange-600
+}
+
+.form_password_icon {
+    @apply absolute top-3 right-3 text-orange-600 cursor-pointer
+}
+
+.submit_btn {
+    @apply w-full bg-orange-600 hover:opacity-80 text-lg rounded-lg shadow-xl py-2 mt-2
+}
+
+.page_closing_btn {
+    @apply text-base absolute top-2 right-2 cursor-pointer
+}
+
+.errormsg_input {
+    @apply text-sm text-red-600 mt-2 ml-2
+}
+
+/* PRODUCT PAGE */
+
+/* ALL PRODUCTS */
+.all_products {
+    @apply grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-3 gap-2
+}
+
+.no_products_available {
+    @apply self-start text-base sm:text-xl md:text-2xl text-gray-500 ml-5
+}
+
+/* CART PAGE */
+.cartPage {
+    @apply w-[95%] flex md:flex-row flex-col md:items-start items-center gap-10
+}
+
+/* CARTPRODUCTS */
+.cartproducts_section {
+    @apply md:w-1/2 w-full flex flex-col gap-10
+}
+
+.product_table {
+    @apply grid grid-flow-row grid-cols-4 gap-y-4 justify-items-center md:text-lg text-sm ml-5
+}
+
+.col_header {
+    @apply font-semibold text-gray-500
+}
+
+.col_header_products {
+    @apply col-span-2 font-semibold text-gray-500 justify-self-start
+}
+
+.col_data {
+    @apply flex items-center
+}
+
+.col_data_products {
+    @apply col-span-2 justify-self-start
+}
+
+.removebtn {
+    @apply size-6 cursor-pointer
+}
+
+.prod_page_link {
+    @apply flex mr-10 items-center gap-1 text-orange-500
+}
+
+.cart_heading {
+    @apply flex self-start gap-4 items-center text-lg
+}
+
+.prod_to_buy {
+    @apply flex gap-4 md:text-lg text-sm
+}
+
+.product_section {
+    @apply grid grid-cols-4
+}
+
+.product_in_cart {
+    @apply flex flex-col gap-5 mt-5
+}
+
+.product_img_container {
+    @apply h-fit p-2 border-2 border-gray-500 md:rounded-lg rounded-md cursor-pointer shadow-xl
+}
+
+.product_details {
+    @apply flex flex-col gap-1
+}
+
+.product_quantity_btn {
+    @apply flex items-center justify-between w-fit md:text-lg text-base bg-orange-600 text-white py-1 px-2 rounded-lg transition gap-3
+}
+
+/* ADD ADDRESS */
+.address_input {
+    @apply p-2 rounded-lg shadow-xl
+}
+
+.address_formbtn {
+    @apply mt-5 w-full bg-orange-600 text-white py-2 rounded-lg shadow-xl
+}
+/* PAYMENT TAB */
+.payment_box{
+    @apply flex flex-col gap-5 p-4 bg-base-300 min-w-[360px]
+}
+.hd_line{
+    @apply h-[1px] w-full bg-gray-500
+}
+.paymentbox_heading{
+    @apply text-xl font-medium
+}
+.paymentbox_subheading{
+    @apply text-lg font-medium
+}
+.paymentbox_listings{
+    @apply flex items-center justify-between gap-2
+}
+.buyer_address{
+    @apply flex flex-col gap-4 p-4 mt-2 rounded-md border-[1px] border-gray-500
+}
+.add_address{
+    @apply self-center hover:text-primary/50
+}
+.payment_method{
+    @apply flex flex-col gap-4 mt-2
+}
+.billings{
+    @apply w-full flex flex-col text-base gap-2
+}
+.paymentbox_btn{
+    @apply w-full bg-orange-600 text-white py-2
+}
+
+/* ORDERS PAGE */
+.single_order{
+    @apply w-full flex flex-col items-start gap-10 ml-10
+}
+.order_container{
+    @apply lg:w-2/3 w-full flex flex-col items-center text-sm gap-5 border border-gray-500 p-4 rounded-md
+}
+.order_row{
+    @apply w-full flex justify-between text-xs md:text-sm lg:text-base
+}
+.order_img_container{
+    @apply flex gap-2 items-center md:min-w-[300px]
+}
+.order_img{
+    @apply md:size-20 size-14 object-cover mb-2 cursor-pointer
+}
+.order_amount{
+ @apply text-orange-500 text-sm md:text-base
+}
+.about_product{
+    @apply flex flex-col items-start
+}
+.order_data{
+ @apply flex flex-col items-start text-base text-orange-500 md:block hidden
+}
+.order_name{
+    @apply text-orange-500 text-base md:text-lg
+}
+/* --x--x--x-- SELLER DASHBOARD --x--x--x-- */
+/* SELLER LOGIN */
+.sellerlogin_page {
+    @apply fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center backdrop-blur-xl bg-white z-30
+}
+
+.sellerlogin_form {
+    @apply relative flex flex-col gap-3 bg-gray-100 min-w-[320px] w-1/4 py-5 px-8 rounded-lg shadow-xl border border-gray-500
+}
+
+.seller_form_heading {
+    @apply text-2xl font-medium mt-2 text-center text-black
+}
+
+.sellerform_input {
+    @apply input input-bordered pl-10 w-full max-w-xs bg-white text-black
+}
+
+.new_product_form_input {
+    @apply bg-white border border-gray-500 p-2 rounded-md
+}
+
+.addproduct_btn {
+    @apply flex justify-center w-1/2 md:text-xl text-lg p-2 bg-orange-600 border border-black rounded-md self-center md:self-start
+}
+.addProduct_loader {
+    @apply size-8 animate-spin
+}
+
+.dashboard_page {
+    @apply p-4 flex flex-1 flex-col h-[90vh] gap-4 text-black overflow-auto
+}
+
+.seller_heading {
+    @apply md:text-3xl sm:text-2xl text-xl
+}
+
+.seller_subheading {
+    @apply md:text-xl text-base
+}
+/* SELLER LAYOUT */
+.seller_layout{
+    @apply w-full flex flex-col
+}
+.seller_navbar{
+    @apply w-full flex items-center justify-between px-4 md:px-8 border-b border-gray-300 h-[10vh] bg-white
+}
+.seller_nav_end{
+    @apply flex items-center gap-5 text-gray-500
+}
+.seller_logout{
+    @apply border rounded-full text-sm px-4 py-1
+}
+.seller_main_body{
+    @apply w-full flex h-[90vh]
+}
+.seller_sidebar{
+    @apply md:min-w-64 w-16 h-full border-r text-base border-gray-300 flex flex-col transition-all duration-300
+}
+.selected{
+    @apply border-r-4 md:border-r-[6px] bg-orange-300/30 border-orange-600 text-orange-700
+}
+.normal{
+    @apply flex items-center py-3 px-4 gap-3 
+}
+.not_selected{
+    @apply hover:bg-gray-100/90 border-white text-black/90
+}
+/* ADD NEW PRODUCT PAGE */
+.addproduct_form {
+    @apply flex flex-col gap-6 lg:w-1/2 w-full
+}
+
+.addproduct_babydiv {
+    @apply w-full flex flex-col gap-2
+}
+
+.addproduct_price_div {
+    @apply w-full flex md:flex-row flex-col gap-4
+}
+
+/* PRODUCT LIST */
+.productlist_container {
+    @apply flex flex-col items-center max-w-4xl w-full rounded-md bg-white border border-gray-500/20
+}
+
+.list_table {
+    @apply md:table-auto table-fixed w-full
+}
+
+.list_thead {
+    @apply text-gray-900 text-sm text-left
+}
+
+.list_tbody {
+    @apply text-sm text-gray-500
+}
+
+.tbody_row {
+    @apply border-t border-gray-500/20
+}
+
+.list_th_item {
+    @apply px-4 py-3 font-semibold truncate
+}
+
+.list_td_image {
+    @apply md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate
+}
+
+.list_td_img_body {
+    @apply border border-gray-300 rounded overflow-hidden
+}
+
+.list_td {
+    @apply px-4 py-3
+}
+
+.list_checkbox_label {
+    @apply relative inline-flex items-center cursor-pointer text-gray-900 gap-3
+}
+
+/* ORDERS */
+.seller_order_container {
+    @apply flex flex-col md:grid md:grid-cols-[2fr_1fr_1fr_1fr] md:items-center gap-5 p-5 max-w-4xl rounded-md border border-gray-300 text-black
+}
+
+.boxicon {
+    @apply w-12 h-12 object-cover opacity-60
+}
+
+._seller_order_name {
+    @apply flex flex-col justify-center text-lg
+}
+
+.seller_order_address {
+    @apply text-sm md:text-base
+}
+
+.seller_order_amount {
+    @apply text-base md:text-lg my-auto
+}
+
+.payment_details {
+    @apply flex flex-col text-sm md:text-base
+}
