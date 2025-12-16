@@ -1,7 +1,7 @@
 import { loginValidation, signupValidation } from "../helpers/validation";
 import { checkauth, Login, Logout, Signup } from "../controllers/userController";
 import { Router } from "express";
-import { isLoggedIn } from "../middlewares/user_middleware";
+import { isLoggedIn } from "../middlewares/user-middleware";
 import { asyncWrap } from "../helpers/utils";
 const router = Router();
 

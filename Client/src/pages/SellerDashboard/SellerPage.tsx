@@ -4,6 +4,7 @@ import { SellerStates } from "../../Helpers/types.ts";
 import SellerLogin from "./sellerlogin/SellerLogin.tsx";
 import Sellerlayout from "./Sellerlayout.tsx";
 import { useEffect } from "react";
+import NotFound from "../Notfound/Notfound.tsx";
 
 
 const SellerPage = () => {
@@ -25,6 +26,8 @@ const SellerPage = () => {
                 : <Navigate to="/seller/login" />} />
             <Route path="login" element={AuthSeller ? <Navigate to="/seller/dashboard" />
                 : <SellerLogin />} />
+            {/* catch all route */}
+            <Route path="*" element={<NotFound />} />
         </Routes>
     )
 }

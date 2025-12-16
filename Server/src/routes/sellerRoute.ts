@@ -1,4 +1,4 @@
-import { isSellerLoggedIn } from "./../middlewares/seller_middleware";
+import { isSellerLoggedIn } from "../middlewares/seller-middleware";
 import { checkseller, sellerLogin, sellerLogout } from "./../controllers/sellerController";
 import { Router } from "express";
 import { asyncWrap } from "./../helpers/utils";

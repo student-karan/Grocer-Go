@@ -1,16 +1,14 @@
 import { newProductValidation } from "./../helpers/validation";
 import { addProduct, allProducts, allProductsSeller, changestock, getProduct } from "./../controllers/productController";
 import { Router } from "express";
-import multer from "multer";
-import storage from "./../helpers/cloudinary";
 import { asyncWrap } from "./../helpers/utils";
-import { isSellerLoggedIn } from "./../middlewares/seller_middleware";
+import { isSellerLoggedIn } from "../middlewares/seller-middleware";
+import { upload } from "../middlewares/multer-middleware";
 
 const router = Router();
-const upload = multer({storage})
 
 // Add product : /api/product/add
-router.post("/add",upload.array("image"),newProductValidation,asyncWrap(addProduct));
+router.post("/add",upload.array("image",4),newProductValidation,asyncWrap(addProduct));
 
 // get products : /api/product/user
 router.get("/user",asyncWrap(allProducts));
@@ -22,6 +20,6 @@ router.get("/seller",asyncWrap(allProductsSeller));
 router.get("/:id",asyncWrap(getProduct));
 
 // change product inStock : /api/product/:id/stock
-router.post("/stock/:id",isSellerLoggedIn,asyncWrap(changestock));
+router.post("/stock/:id",asyncWrap(isSellerLoggedIn),asyncWrap(changestock));
 
 export default router;

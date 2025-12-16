@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { Request, Response,NextFunction } from "express";
 import ExpressError from "./../ExpressError";
 import { loginData } from "./../helpers/validation";

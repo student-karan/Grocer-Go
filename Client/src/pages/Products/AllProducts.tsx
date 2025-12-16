@@ -11,7 +11,7 @@ const AllProducts = () => {
 
     const filteredProducts = useMemo(() => {
         if (search.length >= 1) {
-            let searchedProducts = products.filter((product:product) => product.name.toLowerCase().includes(search));
+            const searchedProducts = products.filter((product:product) => product.name.toLowerCase().includes(search));
             return searchedProducts.filter((product:product) => product.inStock);
         }
         return products.filter((product:product) => product.inStock);

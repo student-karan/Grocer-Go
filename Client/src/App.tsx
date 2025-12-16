@@ -16,12 +16,13 @@ import { Toaster } from "react-hot-toast";
 import MyOrders from "./pages/Orders/Orders.tsx";
 import SellerPage from "./pages/SellerDashboard/SellerPage.tsx";
 import Loader from "./pages/Cart/Loader.tsx";
+import NotFound from "./pages/Notfound/Notfound.tsx";
 
 const App = () => {
   const { theme } = ThemeStore() as themeStore;
   const location = useLocation();
   const ref = useRef<HTMLDivElement>(null);
-  const { AuthUser, setUser,isCheckingAuth } = AppStore() as AppStates;
+  const { AuthUser, setUser, isCheckingAuth } = AppStore() as AppStates;
   const { loadproducts } = ProductStore();
 
   useEffect(() => {
@@ -42,9 +43,9 @@ const App = () => {
   if (!AuthUser && isCheckingAuth) {
     return (
       <div className='registration_page'>
-            <div className='animate-spin rounded-full size-24 border-4 border-gray-300 border-t-orange-500'>
-            </div>
+        <div className='animate-spin rounded-full size-24 border-4 border-gray-300 border-t-orange-500'>
         </div>
+      </div>
     )
   }
 
@@ -63,10 +64,13 @@ const App = () => {
             <Route path="/login" element={AuthUser ? <Navigate to="/" /> : <LoginPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/add-address" element={AuthUser ? <Addaddress /> : <Navigate to="/signup" />} />
-            <Route path="/loader" element={<Loader/>} />
+            <Route path="/loader" element={<Loader />} />
             <Route path="/my-orders" element={AuthUser ? <MyOrders /> : <Navigate to="/signup" />} />
             <Route path="/products/*" element={<ProductPage />} />
             <Route path="/seller/*" element={<SellerPage />} />
+
+            {/* catch all route */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
         {location.pathname.includes("seller") ? null : <Footer />}

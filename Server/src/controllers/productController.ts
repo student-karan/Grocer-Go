@@ -1,18 +1,24 @@
 import { NextFunction, Request, Response } from "express";
-import { productinStock} from "./../helpers/types";
+import { productinStock } from "./../helpers/types";
 import { productData } from "./../helpers/validation";
 import Product from "./../models/productModel";
 import ExpressError from "./../ExpressError";
+import uploadOnCloudinary from "./../helpers/cloudinary";
 
 // Add product : /api/product/add
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
    const product = req.body as productData;
    const images = req.files as Express.Multer.File[];
 
-   const image: string[] = images.map(img => img.path);
+   if (!images || images.length === 0) {
+      throw new ExpressError(400, "At least one image is required");
+   }
+   const uploadPromises = images.map(file => uploadOnCloudinary(file.path));
+   const imageURL = await Promise.all(uploadPromises);
+
    const price = Number.parseInt(product.price);
    const offerPrice = Number.parseInt(product.offerprice);
-   const newProduct = new Product({ ...product, image,price,offerPrice});
+   const newProduct = new Product({ ...product, image: imageURL, price, offerPrice });
    if (newProduct) {
       await newProduct.save();
    }
@@ -27,7 +33,7 @@ export const allProductsSeller = async (req: Request, res: Response, next: NextF
 
 // get products(user) : /api/product/user
 export const allProducts = async (req: Request, res: Response, next: NextFunction) => {
-   const products = await Product.find({inStock:true});
+   const products = await Product.find({ inStock: true });
    res.status(200).send(products);
 }
 
@@ -47,9 +53,9 @@ export const changestock = async (req: Request, res: Response, next: NextFunctio
    const { id } = req.params;
    const { inStock } = req.body as productinStock;
 
-   const product = await Product.findByIdAndUpdate(id, { inStock:inStock },{runValidators:true,new:true});
+   const product = await Product.findByIdAndUpdate(id, { inStock: inStock }, { runValidators: true, new: true });
    if (!product) {
       throw new ExpressError(400, "The product you're looking for doesn't exist");
    }
-   res.status(200).send({message:"The product stock has been updated"});
+   res.status(200).send({ message: "The product stock has been updated" });
 }

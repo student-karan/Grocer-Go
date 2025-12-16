@@ -14,14 +14,16 @@ const ProductCard = ({ product }: { product: product }) => {
 
         <div onClick={() => navigate(`/products/${product.category.toLowerCase()}/${product._id}`)} key={product._id} className={`product_card ${theme === "light" && "border border-gray-500"}`}>
 
-            <img src={product.image[0]} alt="sample" className='product_img' />
-            <p className='category'>{product.category}</p>
-            <p className='product_name'>{product.name}</p>
+            <div className="flex-1">
+                <img src={product.image[0]} alt="sample" className='product_img' />
+                <p className='category'>{product.category}</p>
+                <p className='product_name'>{product.name}</p>
 
-            <div className="flex my-1">
-                {Array(5).fill(0).map((_, i) => {
-                    return (<img key={i} className="sm:size-4 size-2" src={i <= 3 ? assets.star_icon : assets.star_dull_icon} />)
-                })}
+                <div className="flex my-1">
+                    {Array(5).fill(0).map((_, i) => {
+                        return (<img key={i} className="sm:size-4 size-2" src={i <= 3 ? assets.star_icon : assets.star_dull_icon} />)
+                    })}
+                </div>
             </div>
 
             <div className='card_lower_body' onClick={(e) => e.stopPropagation()}>
@@ -37,7 +39,7 @@ const ProductCard = ({ product }: { product: product }) => {
                     (<div className="cartbtn">
                         <p className="text-xl cursor-pointer" onClick={() => removefromCart(product._id)}>-</p>
                         <p className="text-xl">{count}</p>
-                        {itemcount(product._id) < 9? (<p className="text-xl cursor-pointer" onClick={() => addtoCart(product._id)}>+</p>):<p></p>}
+                        {itemcount(product._id) < 9 ? (<p className="text-xl cursor-pointer" onClick={() => addtoCart(product._id)}>+</p>) : <p></p>}
                     </div>)
                 }
             </div>

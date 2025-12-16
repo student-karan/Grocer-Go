@@ -1,5 +1,5 @@
 import { assets } from "../assets/assets.ts";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AppStore } from '../store/main_app/AppStore.ts';
 import { CartStore } from "../store/main_app/CartStore.ts";
 import { SearchStore } from "../store/main_app/SearchStore.ts";
@@ -13,14 +13,15 @@ const Navbar = () => {
     const { setTheme, theme } = ThemeStore() as themeStore;
     const { totalItems, setCart } = CartStore() as CartStates;
     const { search, setSearch } = SearchStore() as searchStore;
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         if (search.length > 0) {
             navigate("/products/all");
         }
     }, [search]);
-    
+
     useEffect(() => {
         setCart();
     }, [AuthUser]);
@@ -34,9 +35,12 @@ const Navbar = () => {
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="nav_links_full_screen">
-                    <li><Link to={"/"} tabIndex={0} className="nav_link">Home</Link></li>
-                    <li><Link to={"/products/all"} tabIndex={0} className="nav_link">Products</Link></li>
-                    <li><Link to={"/"} tabIndex={0} className="nav_link">Contacts</Link></li>
+                    <li><Link to={"/seller/login"} tabIndex={0} className="font-tektur">Seller</Link></li>
+
+                    <li><Link to={"/"} tabIndex={0} className={`font-tektur ${location.pathname === "/" && "nav_link"}`}>Home</Link></li>
+
+                    <li><Link to={"/products/all"} tabIndex={0} className={`font-tektur ${location.pathname.includes("/products/all") && "nav_link"}`}>Products</Link></li>
+
                 </ul>
             </div>
             <div className="navbar_end_full_screen">
@@ -64,8 +68,8 @@ const Navbar = () => {
                             </div>
                         </div>
                         <ul tabIndex={0} className="dropdown_items">
-                            <li><Link to={"/my-orders"} tabIndex={0} className="nav_link">My Orders</Link></li>
-                            <li><button onClick={LogOut} tabIndex={0} className="nav_link">Logout</button></li>
+                            <li><Link to={"/my-orders"} tabIndex={0} className={`font-tektur ${location.pathname.includes("/my-orders") && "nav_link"}`}>My Orders</Link></li>
+                            <li><button onClick={LogOut} tabIndex={0} className="font-tektur">Logout</button></li>
                         </ul>
                     </div>
                 )
@@ -85,15 +89,15 @@ const Navbar = () => {
                     <ul
                         tabIndex={0}
                         className="dropdown_items">
-                        <li><Link to={"/"} tabIndex={0} className="nav_link">Home</Link></li>
+                        <li><Link to={"/seller/login"} tabIndex={0} className="font-tektur">Seller</Link></li>
 
-                        <li><Link to={"/products/all"} tabIndex={0} className="nav_link">Products</Link></li>
+                        <li><Link to={"/"} tabIndex={0} className={`font-tektur ${location.pathname === "/" && "nav_link"}`}>Home</Link></li>
 
-                        <li><Link to={"/"} tabIndex={0} className="nav_link">Contacts</Link></li>
+                        <li><Link to={"/products/all"} tabIndex={0} className={`font-tektur ${location.pathname.includes("/products/all") && "nav_link"}`}>Products</Link></li>
 
-                        {AuthUser ? <li><button onClick={LogOut} tabIndex={0} className="nav_link">LogOut</button></li>
+                        {AuthUser ? <li><button onClick={LogOut} tabIndex={0} className="font-tektur">LogOut</button></li>
                             :
-                            <li><Link to={"/login"} tabIndex={0} className="nav_link">Login</Link></li>}
+                            <li><Link to={"/login"} tabIndex={0} className="font-tektur focus:nav_link">Login</Link></li>}
 
                         <li>
                             <div tabIndex={0} onClick={() => navigate("/cart")} role="button" className="btn btn-ghost btn-circle">
@@ -121,8 +125,8 @@ const Navbar = () => {
                         </div>
                     </div>
                     <ul tabIndex={0} className="dropdown_items">
-                        <li><Link to={"/my-orders"} tabIndex={0} className="nav_link">My Orders</Link></li>
-                        <li><Link to={"/logout"} tabIndex={0} className="nav_link">Logout</Link></li>
+                        <li><Link to={"/my-orders"} tabIndex={0} className={`font-tektur ${location.pathname.includes("/my-orders") && "nav_link"}`}>My Orders</Link></li>
+                        <li><Link to={"/logout"} tabIndex={0} className="font-tektur">Logout</Link></li>
                     </ul>
                 </div>)}
                 {theme == "dark" ?

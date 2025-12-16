@@ -1,8 +1,8 @@
-import { isLoggedIn } from "./../middlewares/user_middleware";
+import { isLoggedIn } from "../middlewares/user-middleware";
 import { Router } from "express";
 import { asyncWrap } from "./../helpers/utils";
 import { getSellerOrders, getUserOrders, placeOrderCOD, placeOrderStripe } from "./../controllers/orderController";
-import { isSellerLoggedIn } from "./../middlewares/seller_middleware";
+import { isSellerLoggedIn } from "../middlewares/seller-middleware";
 const router = Router();
 
 router.post("/cod",isLoggedIn,asyncWrap(placeOrderCOD));

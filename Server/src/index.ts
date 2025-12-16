@@ -13,7 +13,6 @@ import OrderRouter from "./routes/orderRoute";
 import ExpressError from "./ExpressError";
 import path from "path";
 import { asyncWrap } from "./helpers/utils";
-import { connectCloudinary } from "./helpers/cloudinary";
 import { stripeWebhooks } from "./controllers/orderController";
 
 const app = express();
@@ -21,16 +20,15 @@ const port = process.env.PORT || 4000;
 
 // database and cloudinary configuration
 connectdb();
-connectCloudinary();
 
-const AllowedOrigins = ["http://localhost:5173","https://grocer-go-client.vercel.app"];
+const AllowedOrigins = ["http://localhost:5173", "https://grocer-go-client.vercel.app"];
 
 app.use(cors({
     origin: AllowedOrigins,
     credentials: true
 }))
 
-app.post("/stripe",express.raw({type:"application/json"}),asyncWrap(stripeWebhooks));
+app.post("/stripe", express.raw({ type: "application/json" }), asyncWrap(stripeWebhooks));
 
 // middleware configuration
 app.use(cookieParser());
@@ -45,13 +43,13 @@ app.use("/api/seller", SellerRouter);
 app.use("/api/product", ProductRouter);
 app.use("/api/cart", CartRouter);
 app.use("/api/address", AddressRouter);
-app.use("/api/order",OrderRouter);
+app.use("/api/order", OrderRouter);
 
-if(process.env.NODE_ENV === "production"){
-    app.use(express.static(path.resolve(__dirname,"../../Client/dist")));
-    
-    app.get(/(.*)/,(req:Request,res:Response)=>{
-        res.sendFile(path.resolve(__dirname,"../../Client/dist/index.html"));
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.resolve(__dirname, "../../Client/dist")));
+
+    app.get(/(.*)/, (req: Request, res: Response) => {
+        res.sendFile(path.resolve(__dirname, "../../Client/dist/index.html"));
     })
 }
 

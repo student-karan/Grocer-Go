@@ -54,7 +54,7 @@
 }
 
 .nav_link {
-    @apply focus:bg-orange-600 focus:text-base-100 font-tektur
+    @apply bg-orange-600 text-base-100 
 }
 
 /* FOOTER */
@@ -178,7 +178,7 @@
 }
 
 .product_card {
-    @apply flex flex-col w-fit bg-base-300 p-2 rounded-lg cursor-pointer shadow-lg
+    @apply flex flex-col w-fit min-w-[200px] bg-base-300 p-2 rounded-lg cursor-pointer shadow-lg
 }
 
 .cartbtn {
@@ -194,7 +194,7 @@
 }
 
 .card_lower_body {
-    @apply flex items-center gap-4 mt-5
+    @apply  flex items-center justify-between mt-5
 }
 
 .price {
@@ -373,7 +373,7 @@
 
 /* ALL PRODUCTS */
 .all_products {
-    @apply grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-3 gap-2
+    @apply grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4
 }
 
 .no_products_available {

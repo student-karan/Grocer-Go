@@ -1,5 +1,5 @@
 import { Router} from "express";
-import { isLoggedIn } from "./../middlewares/user_middleware";
+import { isLoggedIn } from "../middlewares/user-middleware";
 import { updatecart } from "./../controllers/cartController";
 import { asyncWrap } from "./../helpers/utils";
 const router = Router();

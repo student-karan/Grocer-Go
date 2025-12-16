@@ -1,4 +1,4 @@
-import { isLoggedIn } from "./../middlewares/user_middleware";
+import { isLoggedIn } from "../middlewares/user-middleware";
 import { addAddress, getAddresses } from "./../controllers/addressController";
 import { Router } from "express";
 import { asyncWrap } from "./../helpers/utils";
