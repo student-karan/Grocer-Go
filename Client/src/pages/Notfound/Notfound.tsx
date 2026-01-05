@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 
 const NotFound = () => {
+  const location = useLocation();
   return (
     <div className="webpage">
       <div className="section_body">
@@ -10,7 +11,7 @@ const NotFound = () => {
           <p className="text-gray-600 mb-8">
             Sorry, the page you're looking for doesn't exist.
           </p>
-          <Link to="/"
+          <Link to={`${location.pathname.includes("/seller")? "/seller/login" : "/"}`}
             className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors">
             Go Back Home
           </Link>

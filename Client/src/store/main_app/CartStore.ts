@@ -9,6 +9,7 @@ import { AxiosError } from "axios";
 export const CartStore = create<CartStates>((set, get) => ({
   cartItems: {},
   paymentOption: "COD",
+  isverifyingPayment: false,
   settingOrder: false,
   setPaymentOption: (option) => {
     set({ paymentOption: option });
@@ -60,7 +61,11 @@ export const CartStore = create<CartStates>((set, get) => ({
       set({ cartItems: cartdata });
       toast.success("Added to Cart");
     } catch (error) {
-      toast.error("An Error occured.");
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data as string);
+      } else {
+        toast.error("an error occured.");
+      }
     } finally {
       if (AuthUser) {
         get().updateCart();
@@ -80,7 +85,11 @@ export const CartStore = create<CartStates>((set, get) => ({
       set({ cartItems: cartdata });
       toast.success("Removed from Cart");
     } catch (error) {
-      toast.error("An Error occured.");
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data as string);
+      } else {
+        toast.error("an error occured.");
+      }
     } finally {
       if (AuthUser) {
         get().updateCart();
@@ -98,7 +107,11 @@ export const CartStore = create<CartStates>((set, get) => ({
       set({ cartItems: cartdata });
       toast.success("Completely Removed from the Cart");
     } catch (error) {
-      toast.error("An Error occured.");
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data as string);
+      } else {
+        toast.error("an error occured.");
+      }
     } finally {
       if (AuthUser) {
         get().updateCart();
@@ -125,14 +138,17 @@ export const CartStore = create<CartStates>((set, get) => ({
   AllCartItemsPrice: () => {
     let amount = 0;
     const { cartItems, totalitemAmount } = get();
-    for (let item in cartItems) {
+    for (const item in cartItems) {
       amount += totalitemAmount(item);
     }
     return amount;
   },
   totalItems: () => {
     const { cartItems } = get();
-    const total = Object.values(cartItems).reduce((curr, prev) => curr + prev, 0);
+    const total = Object.values(cartItems).reduce(
+      (curr, prev) => curr + prev,
+      0
+    );
     return total;
   },
   setOrderCOD: async () => {
@@ -140,7 +156,10 @@ export const CartStore = create<CartStates>((set, get) => ({
     try {
       const address = AppStore.getState().selectedAddress?._id as string;
       const { cartItems } = get();
-      const res = await axiosInstance.post("/order/cod", { cartItems, address });
+      const res = await axiosInstance.post("/order/cod", {
+        cartItems,
+        address,
+      });
       toast.success(res.data);
       set({ cartItems: {} });
       get().updateCart();
@@ -148,7 +167,7 @@ export const CartStore = create<CartStates>((set, get) => ({
       if (error instanceof AxiosError) {
         toast.error(error.response?.data as string);
       } else {
-        toast.error("an unexpected error occured.");
+        toast.error("an error occured.");
       }
     } finally {
       set({ settingOrder: false });
@@ -159,10 +178,11 @@ export const CartStore = create<CartStates>((set, get) => ({
     try {
       const { _id: address } = AppStore.getState().selectedAddress as Address;
       const { cartItems } = get();
-      const res = await axiosInstance.post("/order/stripe", { cartItems, address });
+      const res = await axiosInstance.post("/order/stripe", {
+        cartItems,
+        address,
+      });
       window.location.replace(res.data.url);
-      set({ cartItems: {} });
-      get().updateCart();
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data as string);
@@ -172,5 +192,24 @@ export const CartStore = create<CartStates>((set, get) => ({
     } finally {
       set({ settingOrder: false });
     }
-  }
-}))
+  },
+  verifyPayment: async (success, orderId) => {
+    set({ isverifyingPayment: true });
+    try {
+      const res = await axiosInstance.get(`/order/verify/${success}/${orderId}`);
+      toast.success(res.data);
+      
+      set({cartItems:{}});
+      return true;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data as string);
+      } else {
+        toast.error("an unexpected error occured.");
+      }
+      return false;
+    } finally {
+      set({ isverifyingPayment: false });
+    }
+  },
+}));

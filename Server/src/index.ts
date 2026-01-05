@@ -2,6 +2,7 @@ import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import path from "path";
 import compression from "compression";
 import connectdb from "./helpers/db";
 import UserRouter from "./routes/userRoute";
@@ -11,9 +12,6 @@ import CartRouter from "./routes/cartRoute";
 import AddressRouter from "./routes/addressRoute";
 import OrderRouter from "./routes/orderRoute";
 import ExpressError from "./ExpressError";
-import path from "path";
-import { asyncWrap } from "./helpers/utils";
-import { stripeWebhooks } from "./controllers/orderController";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -27,8 +25,6 @@ app.use(cors({
     origin: AllowedOrigins,
     credentials: true
 }))
-
-app.post("/stripe", express.raw({ type: "application/json" }), asyncWrap(stripeWebhooks));
 
 // middleware configuration
 app.use(cookieParser());

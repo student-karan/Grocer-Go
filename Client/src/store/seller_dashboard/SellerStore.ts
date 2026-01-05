@@ -119,5 +119,17 @@ export const SellerStore = create<SellerStates>((set, get) => ({
         } finally {
             await get().setProductsList();
         }
+    },
+    updateOrderStatus: async(orderId : string,status : string)=>{
+        try{
+            const res = await axiosInstance.post(`/order/updateStatus/${orderId}`,{status});
+            toast.success(res.data);
+        } catch(error){
+            if (error instanceof AxiosError) {
+                toast.error(error.response?.data as string);
+            } else {
+                toast.error("an unexpected error occured.");
+            }
+        }
     }
 }))

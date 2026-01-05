@@ -1,5 +1,5 @@
-import Navbar from "./components/Navbar.js";
-import Footer from "./components/Footer.js";
+import Navbar from "./components/Navbar.tsx";
+import Footer from "./components/Footer.tsx";
 import ProductPage from "./pages/Products/ProductPage.tsx";
 import Homepage from "./pages/Home/Homepage.js";
 import SignupPage from "./pages/Signup/SignupPage.tsx";
@@ -15,7 +15,7 @@ import { useEffect, useRef } from "react";
 import { Toaster } from "react-hot-toast";
 import MyOrders from "./pages/Orders/Orders.tsx";
 import SellerPage from "./pages/SellerDashboard/SellerPage.tsx";
-import Loader from "./pages/Cart/Loader.tsx";
+import Verify from "./pages/Cart/Verify.tsx";
 import NotFound from "./pages/Notfound/Notfound.tsx";
 
 const App = () => {
@@ -25,11 +25,11 @@ const App = () => {
   const { AuthUser, setUser, isCheckingAuth } = AppStore() as AppStates;
   const { loadproducts } = ProductStore();
 
+  async function rerender() {
+    await loadproducts();
+    await setUser();
+  }
   useEffect(() => {
-    async function rerender() {
-      await loadproducts();
-      await setUser();
-    }
     rerender();
   }, []);
 
@@ -42,30 +42,50 @@ const App = () => {
 
   if (!AuthUser && isCheckingAuth) {
     return (
-      <div className='registration_page'>
-        <div className='animate-spin rounded-full size-24 border-4 border-gray-300 border-t-orange-500'>
-        </div>
+      <div className="registration_page">
+        <div className="animate-spin rounded-full size-24 border-4 border-gray-300 border-t-orange-500"></div>
       </div>
-    )
+    );
   }
 
   return (
     <div>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-      />
-      <div ref={ref} className={location.pathname.includes("seller") ? "w-full" : "main_container"} data-theme={theme}>
+      <Toaster position="top-center" reverseOrder={false} />
+      <div
+        ref={ref}
+        className={
+          location.pathname.includes("seller") ? "w-full" : "main_container"
+        }
+        data-theme={theme}
+      >
         {location.pathname.includes("seller") ? null : <Navbar />}
-        <div className={location.pathname.includes("seller") ? "w-full bg-white min-h-screen" : "w-full mt-5"}>
+        <div
+          className={
+            location.pathname.includes("seller")
+              ? "w-full bg-white min-h-screen"
+              : "w-full mt-5"
+          }
+        >
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="/signup" element={AuthUser ? <Navigate to="/" /> : <SignupPage />} />
-            <Route path="/login" element={AuthUser ? <Navigate to="/" /> : <LoginPage />} />
+            <Route
+              path="/signup"
+              element={AuthUser ? <Navigate to="/" /> : <SignupPage />}
+            />
+            <Route
+              path="/login"
+              element={AuthUser ? <Navigate to="/" /> : <LoginPage />}
+            />
             <Route path="/cart" element={<CartPage />} />
-            <Route path="/add-address" element={AuthUser ? <Addaddress /> : <Navigate to="/signup" />} />
-            <Route path="/loader" element={<Loader />} />
-            <Route path="/my-orders" element={AuthUser ? <MyOrders /> : <Navigate to="/signup" />} />
+            <Route
+              path="/add-address"
+              element={AuthUser ? <Addaddress /> : <Navigate to="/signup" />}
+            />
+            <Route path="/verify" element={<Verify />} />
+            <Route
+              path="/my-orders"
+              element={AuthUser ? <MyOrders /> : <Navigate to="/signup" />}
+            />
             <Route path="/products/*" element={<ProductPage />} />
             <Route path="/seller/*" element={<SellerPage />} />
 
@@ -76,7 +96,7 @@ const App = () => {
         {location.pathname.includes("seller") ? null : <Footer />}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

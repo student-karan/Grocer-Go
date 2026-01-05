@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { SellerStore } from "../../store/seller_dashboard/SellerStore.ts";
 import { SellerStates } from "../../Helpers/types.ts";
 import Addproduct from "./Seller/addProduct/Addproduct.tsx";
-import Orders from "./Seller/Orders.tsx";
+import Orders from "./Seller/sellerOrders/Orders.tsx";
 import ProductList from "./Seller/ProductList.tsx";
 
 const Sellerlayout = () => {

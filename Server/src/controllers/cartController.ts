@@ -7,7 +7,7 @@ import ExpressError from "./../ExpressError";
 export const updatecart = async (req: Request, res: Response, next: NextFunction) => {
     const cartItems = req.body;
     const id = get(req,"userId");
-
+      
     const user = await User.findByIdAndUpdate(id,{cartItems},{runValidators:true,new:true});
     if(user){
         res.status(200).send(user.cartItems);

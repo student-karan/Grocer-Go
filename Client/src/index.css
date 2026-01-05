@@ -488,13 +488,16 @@
 
 /* ORDERS PAGE */
 .single_order{
-    @apply w-full flex flex-col items-start gap-10 ml-10
+    @apply w-full flex flex-col items-start gap-10 md:ml-10
 }
 .order_container{
     @apply lg:w-2/3 w-full flex flex-col items-center text-sm gap-5 border border-gray-500 p-4 rounded-md
 }
 .order_row{
-    @apply w-full flex justify-between text-xs md:text-sm lg:text-base
+    @apply w-full flex justify-between items-center text-xs md:text-sm lg:text-base
+}
+.track_order{
+    @apply px-3 py-1.5 md:px-4 md:py-2 border border-gray-500 text-xs sm:text-sm font-medium rounded-sm hover:bg-orange-500 hover:text-black transition-colors
 }
 .order_img_container{
     @apply flex gap-2 items-center md:min-w-[300px]
@@ -637,18 +640,23 @@
 }
 
 /* ORDERS */
-.seller_order_container {
-    @apply flex flex-col md:grid md:grid-cols-[2fr_1fr_1fr_1fr] md:items-center gap-5 p-5 max-w-4xl rounded-md border border-gray-300 text-black
+.seller_order_container{
+    @apply flex flex-col md:flex-row justify-center p-5 max-w-[900px] gap-2 rounded-md border border-gray-300 text-black
+}
+.seller_order_details {
+    @apply flex flex-col md:grid md:grid-cols-[2fr_1fr_1fr] md:items-center gap-5 
 }
 
 .boxicon {
-    @apply w-12 h-12 object-cover opacity-60
+    @apply w-16 h-16 object-cover opacity-60
 }
 
 ._seller_order_name {
-    @apply flex flex-col justify-center text-lg
+    @apply flex flex-col justify-center items-start text-lg
 }
-
+.seller_order_status {
+    @apply size-fit my-auto bg-white border border-gray-300 rounded-md p-2
+}
 .seller_order_address {
     @apply text-sm md:text-base
 }

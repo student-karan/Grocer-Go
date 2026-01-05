@@ -131,6 +131,7 @@ export type CartStates = {
     cartItems: Record<string, number>,
     paymentOption: "COD" | "Online",
     settingOrder:boolean,
+    isverifyingPayment:boolean,
     setPaymentOption: (option: "COD" | "Online") => void,
     setCart : () => Promise<void>,
     updateCart : () => Promise<void>,
@@ -142,7 +143,8 @@ export type CartStates = {
     AllCartItemsPrice: () => number,
     totalItems: () => number,
     setOrderCOD : () => Promise<void>,
-    setOrderstripe : () => Promise<void>
+    setOrderstripe : () => Promise<void>,
+    verifyPayment : (success: string, orderId: string) => Promise<boolean>,
 }
 export type ProductStates = {
     products: product[],
@@ -252,5 +254,6 @@ export type SellerStates = {
     setSeller: () => Promise<void>,
     setProductsList: () => Promise<void>,
     toggleStock: (inStock:boolean,itemId:string) => Promise<void>,
-    setOrders: () => void
+    setOrders: () => Promise<void>,
+    updateOrderStatus: (orderId: string, status: string) => Promise<void>
 }

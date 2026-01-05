@@ -126,7 +126,7 @@ const Navbar = () => {
                     </div>
                     <ul tabIndex={0} className="dropdown_items">
                         <li><Link to={"/my-orders"} tabIndex={0} className={`font-tektur ${location.pathname.includes("/my-orders") && "nav_link"}`}>My Orders</Link></li>
-                        <li><Link to={"/logout"} tabIndex={0} className="font-tektur">Logout</Link></li>
+                        <li><button onClick={LogOut} tabIndex={0} className="font-tektur">LogOut</button></li>
                     </ul>
                 </div>)}
                 {theme == "dark" ?

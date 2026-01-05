@@ -75,7 +75,7 @@ export const placeOrderStripe = async (req: Request, res: Response, next: NextFu
         productData.push({
             name: producttofind.name,
             price: producttofind.offerPrice,
-            quantity: quantity
+            quantity : quantity
         });
 
         const amount = producttofind.offerPrice * quantity;
@@ -92,9 +92,7 @@ export const placeOrderStripe = async (req: Request, res: Response, next: NextFu
         items,
         amount: totalAmount,
         address,
-        status: "pending",
-        paymentType: "Online",
-        isPaid: false
+        paymentType: "Online"
     });
 
     const secret_key = process.env.STRIPE_SECRET_KEY as string;
@@ -119,12 +117,8 @@ export const placeOrderStripe = async (req: Request, res: Response, next: NextFu
         const session = await stripeInstance.checkout.sessions.create({
             line_items,
             mode: "payment",
-            success_url: `${origin}/loader?next=my-orders`,
-            cancel_url: `${origin}/cart`,
-            metadata: {
-                orderId: Neworder._id.toString(),
-                userId: userId.toString()
-            }
+            success_url: `${origin}/verify?success=true&orderId=${Neworder._id}`,
+            cancel_url: `${origin}/verify?success=false&orderId=${Neworder._id}`,
         });
         res.status(200).send({ url: session.url });
 
@@ -135,85 +129,17 @@ export const placeOrderStripe = async (req: Request, res: Response, next: NextFu
     }
 };
 
-// stripe webhook for payment verification : /stripe
-export const stripeWebhooks = async (req: Request, res: Response, next: NextFunction) => {
-    const secret_key = process.env.STRIPE_SECRET_KEY as string;
-    const stripeInstance = new Stripe(secret_key, { apiVersion: "2025-07-30.basil" });
-
-    const sig = req.headers["stripe-signature"] as string | string[];
-    let event;
-
-    try {
-        event = stripeInstance.webhooks.constructEvent(
-            req.body,
-            sig,
-            process.env.STRIPE_WEBHOOK_SECRET as string
-        )
-    } catch (error) {
-        throw new ExpressError(400, `Webhook error: ${error}`);
-    }
-
-    switch (event.type) {
-        case "checkout.session.completed": {
-            const session = event.data.object as Stripe.Checkout.Session;
-            console.log(`💳 Session status: ${session.status}, Payment status: ${session.payment_status}`);
-            
-            if (session.payment_status === 'paid') {
-                const { orderId, userId } = session.metadata as { orderId: string, userId: string };
-                if (!orderId || !userId) {
-                    throw new ExpressError(400, "Missing metadata");
-                }
-
-                try {
-                    // Check if order exists first
-                    const existingOrder = await Order.findById(orderId);
-                    
-                    if (!existingOrder) {
-                        throw new ExpressError(400, "Order not found");
-                    }
-
-                    console.log(`📊 Current order status: isPaid=${existingOrder.isPaid}, status=${existingOrder.status}`);
-
-                    // Mark payment as paid
-                    const updatedOrder = await Order.findByIdAndUpdate(
-                        orderId,
-                        {
-                            isPaid: true,
-                            status: "Order Placed"
-                        },
-                        { new: true, runValidators: true }
-                    );
-
-                    // Clear user's cart
-                    const userUpdate = await User.findByIdAndUpdate(userId, { cartItems: {} });
-                    res.status(200).send("Payment processed successfully");
-                } catch (dbError) {
-                    throw new ExpressError(500, "Database error during payment processing");
-                }
-            } else {
-                res.status(200).send("Session completed - payment not yet paid");
-            }
-            break;
-        }
-
-        case "checkout.session.expired": {
-            const session = event.data.object as Stripe.Checkout.Session;
-            const { orderId } = session.metadata as { orderId: string };
-
-            if (orderId) {
-                try {
-                    await Order.findByIdAndDelete(orderId);
-                } catch (error) {
-                }
-            }
-            res.status(200).send("Expired session handled");
-            break;
-        }
-
-        default: {
-            res.status(200).send("Event received");
-            break;
-        }
+// stripe payment verification : /stripe
+export const verifyStripe = async (req: Request, res: Response, next: NextFunction) => {
+    const {orderId,success} = req.params;
+    const userId = get(req, "userId");
+    if(success === "true"){
+        await Order.findByIdAndUpdate(orderId,{isPaid:true},{new:true,runValidators:true});
+        await User.findByIdAndUpdate(userId, { cartItems: {} });
+        res.status(200).send("Payment successful and order placed");
+    } else {
+        await Order.findByIdAndDelete(orderId);
+        throw new ExpressError(400, "Payment failed, order cancelled");
     }
 };
 
@@ -223,12 +149,26 @@ export const getUserOrders = async (req: Request, res: Response, next: NextFunct
     const orders = await Order.find({
         userId,
         $or: [{ paymentType: "COD" }, { isPaid: true }]
-    }).populate("items.product").populate("address").sort({ creaedAt: -1 });;
+    }).populate("items.product").populate("address").sort({ createdAt: -1 });
     res.status(200).send(orders);
 }
 
 // Get orders for seller : /api/order/seller
 export const getSellerOrders = async (req: Request, res: Response, next: NextFunction) => {
-    const orders = await Order.find({}).populate("items.product").populate("address").sort({ creaedAt: -1 });
+    const orders = await Order.find({}).populate("items.product").populate("address").sort({ createdAt: -1 });
     res.status(200).send(orders);
 } 
+
+// Update oder status : /api/order/updateStatus/:orderId
+export const updateOrderStatus = async (req: Request, res: Response, next: NextFunction) => {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, { status }, { new: true, runValidators: true });
+
+    if (!updatedOrder) {
+        throw new ExpressError(404, "Order not found");
+    }
+
+    res.status(200).send("Order status updated successfully");
+}

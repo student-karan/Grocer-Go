@@ -1,5 +1,5 @@
 import "dotenv/config";
-import jwt, { DecodeOptions, JwtPayload } from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import ExpressError from "../ExpressError";
 import { merge } from "lodash";
