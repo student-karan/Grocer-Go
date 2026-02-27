@@ -6,7 +6,7 @@ import { generateSellerToken } from "./../helpers/utils";
 
 export const sellerLogin = async (req: Request, res: Response,next:NextFunction) => {
     const { email, password } = req.body as loginData;
-
+    
     if (email === process.env.SELLER_EMAIL && password === process.env.SELLER_PASSWORD) {
         generateSellerToken(email, res);
         res.status(200).send({seller:"SELLER",message:"Seller is logged in"})

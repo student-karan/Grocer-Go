@@ -60,13 +60,15 @@ const EachOrder = ({order,key}:{order:orders,key:number}) => {
             </div>
             <p className="seller_order_amount">${order.amount}</p>
           </div>
-          <select className="seller_order_status" onChange={UpdateStatus} value={status}>
+          {order.isPaid && (
+            <select className="seller_order_status" onChange={UpdateStatus} value={status}>
             <option value="Order Placed">Order Placed</option>
             <option value="Packing">Packing</option>
             <option value="Shipped">Shipped</option>
             <option value="Out for Delivery">Out for Delivery</option>
             <option value="Delivered">Delivered</option>
           </select>
+          )}
         </div>
   )
 }

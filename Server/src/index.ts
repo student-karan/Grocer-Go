@@ -50,7 +50,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // error handling middleware
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response, next : NextFunction) => {
     if (err instanceof ExpressError) {
         res.status(err.status).json(err.message);
     } else {
